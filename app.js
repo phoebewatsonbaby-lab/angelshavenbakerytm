@@ -10,7 +10,8 @@ const products=[
  ['Strawberry Oreo s’mores cookies','Cookies','A strawberry, Oreo and s’mores combination.','strawberry-cookies',350,1500],
  ['Croissants','Pastries','Golden layers of buttery, flaky goodness.','croissants'],
 
- ['Cupcakes','Cupcakes','Tell us your preferred flavour, quantity and occasion. We’ll confirm options, availability and pricing on WhatsApp.','cupcakes'],
+ ['Vanilla cupcake','Cupcakes','A soft vanilla cupcake with a creamy swirl and colourful sprinkles. A little joy for any day.','vanilla-cupcake'],
+ ['Chocolate cupcake','Cupcakes','A rich chocolate cupcake topped with a generous swirl of chocolate frosting. Made for chocolate lovers.','chocolate-cupcake'],
  ['Mini cheesecakes','Cakes','Little treats with a creamy cheesecake centre.','cheesecake'],
  ['Vanilla glazed donuts','Donuts','Sweet vanilla glaze for a little everyday joy.','vanilla-donuts',600,1000],
  ['Chocolate glazed donuts','Donuts','A chocolate-glazed favourite for your treat box.','chocolate-donuts',600,1000],
@@ -23,7 +24,7 @@ const products=[
 ];
 const productId=p=>p[6]||p[3];
 const categories=[
- {name:'Cupcakes',title:'Cupcakes',id:'cupcakes',note:'A little celebration, one cupcake at a time. Ask us about flavours and pricing.'},
+ {name:'Cupcakes',title:'Cupcakes',id:'cupcakes',note:'A little celebration, one cupcake at a time. Choose vanilla or chocolate, then message us for quantities and pricing.'},
  {name:'Donuts',title:'Donuts',id:'donuts',note:'Choose your glaze. Order a pack of 3 or a box of 6.'},
  {name:'Cookies',title:'Cookies',id:'cookies',note:'Six sweet flavours, individually or by the box. Please allow at least 3 days for cookie pre-orders.'},
  {name:'Cakes',title:'Cakes & cheesecakes',id:'cakes',note:'A slice to enjoy or something for your next occasion.'},
@@ -39,10 +40,10 @@ const packLabels=p=>p[1]==='Cakes'?['1 slice','3 slices']:p[1]==='Donuts'?['Pack
 const itemName=key=>{const {p,pack}=itemInfo(key);return p[0]+(p[4]?' — '+packLabels(p)[pack==='box'?1:0]:'');};
 const menuSubtotal=()=>Object.entries(cart).reduce((sum,[key,n])=>{const {p,pack}=itemInfo(key);return sum+n*(p[pack==='box'?5:4]||0)},0);
 function productCard(p){
- const labels=packLabels(p),png=['chip-cookies-enhanced','lofthouse-clean','vanilla-donuts','chocolate-donuts','cappuccino-donuts','pumpkin-honey-bun-cake'].includes(p[3]);
+ const labels=packLabels(p),png=['chip-cookies-enhanced','lofthouse-clean','vanilla-donuts','chocolate-donuts','cappuccino-donuts','pumpkin-honey-bun-cake','vanilla-cupcake','chocolate-cupcake'].includes(p[3]);
  const imageInfo=window.HavenProductImages?.[p[3]];
  const sources=imageInfo?`<source type="image/webp" srcset="/assets/gallery/${p[3]}-480.webp ${imageInfo.smallWidth}w${imageInfo.largeWidth>imageInfo.smallWidth?`, /assets/gallery/${p[3]}-960.webp ${imageInfo.largeWidth}w`:''}" sizes="(max-width:700px) 42vw, 28vw">`:'';
- const photo=p[1]==='Cupcakes'?'<div class="product-photo cupcake-enquiry"><img src="/assets/angel-mark.svg" alt=""><span class="eyebrow">A LITTLE CELEBRATION</span><strong>Cupcakes, your way.</strong><p>Ask us for photos, flavours &amp; a quote.</p></div>':`<div class="product-photo ${p[3]==='pumpkin-honey-bun-cake'?'pumpkin-photo':''}"><picture>${sources}<img src="/assets/${p[3]}.${png?'png':'jpg'}" alt="${p[4]?'Supplied reference image for':'Sample image for'} ${p[0]}" loading="lazy" decoding="async"></picture><span class="product-category">${p[1]}</span></div>`;
+ const photo=`<div class="product-photo ${p[3]==='pumpkin-honey-bun-cake'?'pumpkin-photo':''}"><picture>${sources}<img src="/assets/${p[3]}.${png?'png':'jpg'}" alt="${p[4]||p[1]==='Cupcakes'?'Supplied reference image for':'Sample image for'} ${p[0]}" loading="lazy" decoding="async"></picture><span class="product-category">${p[1]}</span></div>`;
  const action=p[1]==='Cupcakes'?'<a class="add" href="https://wa.me/message/J453CRXZDTW3D1" target="_blank" rel="noopener">Enquire on WhatsApp ↗</a>':`<button class="add" data-add="${productId(p)}:single" aria-label="Add ${p[0]} to order">Add to list +</button>`;
  return `<article class="product">${photo}<h4>${p[0]}</h4><p>${p[2]}</p>${p[4]?`<div class="cookie-prices"><span>${labels[0]} <strong>${money(p[4])}</strong></span><span>${labels[1]} <strong>${money(p[5])}</strong></span></div><p class="preorder-note">${p[1]==='Cookies'?'Pre-order at least 3 days ahead':p[1]==='Cakes'?'A little treat or a family share':'Packs of 3, 6 & more · add multiple packs'} · JMD</p><div class="cookie-actions"><button class="add" data-add="${productId(p)}:single" aria-label="Add ${labels[0]} ${p[0]}">Add ${labels[0].toLowerCase()} +</button><button class="add" data-add="${productId(p)}:box" aria-label="Add ${labels[1]} ${p[0]}">Add ${labels[1].toLowerCase()} +</button></div>`:`<div class="product-bottom"><span class="price">Confirm price on WhatsApp</span>${action}</div>`}</article>`;
 }
