@@ -1,4 +1,5 @@
-const form='https://docs.google.com/forms/d/e/1FAIpQLSfh_kAZg2WNbAqzF3lc6wuB86Zr_XLc2tqN66Q8PEILzqutaw/viewform';
+const form='https://tally.so/r/Z98K2z';
+// All shared order buttons open the bakery's current Tally enquiry form.
 document.querySelectorAll('.form-link').forEach(a=>a.href=form);
 const products=[
  ["Pumpkin Honey Bun Cake","Cakes","A treat for you and your family to enjoy anywhere, anytime.","pumpkin-honey-bun-cake",800,1600],

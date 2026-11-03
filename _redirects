@@ -1,2 +1,3 @@
+/products /menu 301
 /gallery /products 301
 /gallery/* /products 301
